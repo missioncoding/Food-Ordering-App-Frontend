@@ -1,0 +1,71 @@
+
+.panel-restaurant-details{
+        display: flex;
+        align-items: center;
+        padding: 25px;
+        background-color: rgb(201, 200, 200)
+    }
+
+/* Style for the container containing rating and cost   */
+.restaurant-rating-cost-container{
+    display: flex;
+    align-items: center;
+}
+.restaurant-avg-cost-container{
+    display: flex;
+    flex-direction: column;
+    float: left;
+    
+}
+/* Style for the restaurant rating */
+.restaurant-rating{
+    display: flex;
+    align-items: baseline;
+
+}
+/* Style for restaurant avg cost */
+.restaurant-avg-cost{
+    display: flex;
+    align-items: baseline;
+    
+}
+/* Style for the container containing restaurant rating and the text */
+.restaurant-rating-container{
+    display: flex;
+    flex-direction: column;    
+}
+/*******************************************************************************************************************************/
+/*******************************************************************************************************************************/
+/* Responsive code for the smaller screen size */
+@media screen and (max-width:600px){
+    .panel-restaurant-details{
+        flex-direction: column;
+    }
+    .restaurant-details{
+        text-align: center;
+    }
+    .restaurant-avg-cost-container{
+        margin-left: auto;
+    }
+    .restaurant-rating{
+        align-self: center;
+
+    }
+    .restaurant-avg-cost{
+        place-content: center;
+    }
+}
+/* Responsive code for the smaller screen size */
+@media screen and (min-width:600px){
+    .restaurant-details{
+        margin-left: 75px;
+        width: 100%;
+    }
+}
+
+/* Responsive code for the smaller screen size */
+@media screen and (min-width:1000px){
+    .restaurant-avg-cost-container{
+        margin-left: 350px;
+    }
+}
