@@ -169,7 +169,7 @@ class Details extends Component {
                                 {category.item_list.map(item => (
                                     <div className='menu-item-container' key={item.id}>
                                         <i className="fa fa-stop-circle-o" aria-hidden="true"
-                                            style={{ color: item.itemType === "NON_VEG" ? "#BE4A47" : "#5A9A5B", }}>
+                                            style={{ color: item.item_type === "NON_VEG" ? "#BE4A47" : "#5A9A5B", }}>
                                         </i>
                                         <Typography variant="subtitle1" component="p"
                                             className={classes.menuItemName} >
@@ -210,7 +210,7 @@ class Details extends Component {
                                 {this.state.cartItems.map(cartItem => ( //Iterating over each item in cartItem to show in the cart.
                                     <div className="cart-menu-item-container" key={cartItem.id}>
                                         <i className="fa fa-stop-circle-o" aria-hidden="true"
-                                            style={{ color: cartItem.itemType === "NON_VEG" ? "#BE4A47" : "#5A9A5B", }}>
+                                            style={{ color: cartItem.item_type === "NON_VEG" ? "#BE4A47" : "#5A9A5B", }}>
                                         </i>
                                         <Typography variant="subtitle1"
                                             component="p"
