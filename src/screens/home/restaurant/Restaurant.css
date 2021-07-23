@@ -1,0 +1,28 @@
+.rating-stars{
+    background-color: #FFCC00;    
+    color: white;
+    padding: 4px 4px 4px 5px;
+    white-space: nowrap;
+    width: 37%;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+.rating-container{
+    display: flex;
+    justify-content:space-between;
+    flex-direction: row;
+    padding: 5%;
+    align-items: center;
+}
+
+.avg-price{
+    padding: 4px 4px 4px 5px;
+    margin-left: auto;
+}
+
+.cardContainer{
+    width:100% !important;
+    height:100% !important;
+}

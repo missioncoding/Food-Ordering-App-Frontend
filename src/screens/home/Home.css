@@ -1,0 +1,42 @@
+.mainContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 1%;
+    margin-top: 16px;
+ }
+ 
+ .restaurantCard {
+    display:inline-block;
+    width:25%;
+    height:100%;
+    padding-bottom: 2%;
+ }
+ 
+ @media (max-width: 1200px){
+    .restaurantCard {
+       display:inline-block;
+       flex-grow: 1;
+       width:49%;
+    }
+ }
+ 
+ @media only screen and (max-width: 768px) {
+   .restaurantCard {
+      display:inline-block;
+      flex-grow: 1;
+      width:49%;
+   }
+ }
+
+ @media only screen and (max-width: 480px) {
+   .restaurantCard {
+      display:inline-block;
+      flex-grow: 1;
+      width:99%;
+   }
+ }
+
+ .gridCard{
+    height:100% !important;
+    width:100%;
+ }
