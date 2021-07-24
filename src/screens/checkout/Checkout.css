@@ -1,0 +1,56 @@
+.gridListMain{
+    display: flex;
+    flex-wrap:nowrap !important;
+    transform: translateZ(0);
+    height:400px;
+    width: 1000px !important;
+    
+    }
+    
+    
+    
+    .gridListTile{
+    margin-top: 1%;
+    width:33% !important;
+    height:90% !important;
+    margin-left: 1%;
+    box-shadow:2px -3px 6px 3px grey;
+    }
+    
+    
+    .selectedAddress{
+    margin-top: 1%;
+    width:33% !important;
+    height:90% !important;
+    margin-left: 1%;
+    box-shadow:2px -3px 6px 3px #f50057;
+    }
+    .selectAddresscircle{
+    margin-left: 80% !important;
+    }
+    
+    
+    .addressCard{
+    height:290px !important;
+    }
+    
+  
+    .dispNone{
+        display: none;
+    }
+    
+    .dispText{
+        display: block;
+        font-size: 30px;
+        margin-left:4%;
+    }
+    
+   
+    @media only screen and (max-width: 1400px) {
+    .saveAddressButton{
+        width:140px !important;
+    }
+    
+    
+    }
+   
