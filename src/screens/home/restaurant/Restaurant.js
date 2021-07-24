@@ -10,10 +10,6 @@ import { withRouter } from 'react-router-dom';
 
 class Restaurant extends Component {
 
-	constructor(props) {
-		super(props)
-	}
-
 	clickCardHandler = (id) => {
 		let detailsPageUrl = '/restaurant/' + id;
 		return this.props.history.push(detailsPageUrl)
