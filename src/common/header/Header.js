@@ -65,7 +65,8 @@ class Header extends Component {
   constructor() {
     super();
     this.state = {
-      invalidContactNo: "",
+      invalidContactNo: "required",
+      invalidPassword: "required",
       username: "",
       password: "",
       loginErrorMsg: "",
@@ -94,7 +95,12 @@ class Header extends Component {
       isMenuOpen: false,
       isModalOpen: false,
       showUserProfile: false,
-      value: 0
+      value: 0,
+      invalidSignUpFirstname: "required",
+      invalidSignUpLastname: "required",
+      invalidSignUpEmail: "required",
+      invalidSignUpPassword: "required",
+      invalidSignUpContactNo: "required",
     }
   }
 
@@ -120,24 +126,44 @@ class Header extends Component {
     this.setState({ signUpPassword: e.target.value })
   }
 
+  resetLoginOutputs = () => {
+    this.setState({ invalidContactNo: "required" });
+    this.setState({ invalidPassword: "required"});
+    this.setState({ loginErrCode: "" });
+    this.setState({ loginErrorMsg: "" });
+    this.setState({ usernameRequired: "dispNone" });
+    this.setState({ passwordRequired: "dispNone" });
+    this.setState({ loginError: "dispNone" });
+  }
+
+  validateLoginInputs = () => {
+    // validating the inputs
+    // before that reset the login inputs
+    this.resetLoginOutputs()
+    this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
+    this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
+    //checking if username and password fields are null if so just return
+    if (this.state.username === "" || this.state.password === "") {
+      return false 
+    } else {
+      // validating the contact number or username
+      let cno = this.state.username;
+      if (cno.length !== 10 ||  !(/^\d{10}$/.test(cno)) ) {
+        this.setState({ usernameRequired: "dispBlock" });
+        this.setState({ invalidContactNo: "Invalid Contact" })
+        return false
+      }
+    }
+    return true
+  }
+
 
   //Login functionality
   loginClickHandler = () => {
-    // look up for required inputs
-    this.state.username === "" ? this.setState({ usernameRequired: "dispBlock" }) : this.setState({ usernameRequired: "dispNone" });
-    this.state.password === "" ? this.setState({ passwordRequired: "dispBlock" }) : this.setState({ passwordRequired: "dispNone" });
-    //checking if username and password fields are null
-    if (this.state.username === "" || this.state.password === "") { return }
-    let tempContactNo = this.state.username;
-    //validated Contact number should be 10 digits in length
-    var reg = new RegExp('^[0-9]+$');
-    this.setState({ invalidContactNo: "" })
-    this.setState({ loginErrorMsg: "" })
-    if (tempContactNo.length !== 10 || !reg.test(tempContactNo)) {
-      this.setState({ invalidContactNo: "Invalid Contact" })
-      return;
+    // validating login inputs
+    if (!this.validateLoginInputs()) {
+        return
     }
-
     let that = this;
     let loginData = null
     let xhrLogin = new XMLHttpRequest();
@@ -168,88 +194,78 @@ class Header extends Component {
     xhrLogin.send(loginData);
   }
 
-
-  validateSignUpParameters = () => {
-      if (!this.validateSignupFirstName()) {
-          return false;
-      }
-      if (!this.validateEmail()) {
-        return false;
-      }
-      if (!this.validateSignupPassword()) {
-          return false;
-      }
-      if (!this.validateContactnoSignUp()) {
-          return false;
-      }
-      return true;
+  resetSignUpOutputs = () => {
+    this.setState({ signUpErrorMsg: "" });
+    this.setState({ signUpErrCode: "" });
+    this.setState({ signupError: "dispNone" });
+    this.setState({ emailRequired: "dispNone" });
+    this.setState({ firstnameRequired: "dispNone" });
+    this.setState({ lastnameRequired: "dispNone" });
+    this.setState({ mobileRequired: "dispNone" });
+    this.setState({ signUpPasswordRequired: "dispNone" });
+    this.setState({ invalidSignUpFirstname: "required"});
+    this.setState({ invalidSignUpLastname: "required"});
+    this.setState({ invalidSignUpEmail: "required"});
+    this.setState({ invalidSignUpPassword: "required"});
+    this.setState({ invalidSignUpContactNo: "required"});
   }
 
-
-  //Signup form validation
-  validateSignupFirstName = () => {
-    this.state.firstname === "" ? this.setState({ firstnameRequired: 'dispBlock' }) : this.setState({ firstnameRequired: 'dispNone' })
-    return this.state.firstnameRequired === "dispBlock" ? false : true;
-  } 
-
-  //SIgnup form - email validation
   validateEmail = () => {
     let email = this.state.email;
-    let isValidEmail = email.length > 0 ?
-      (validator.isEmail(email) ? true : false)
-      :
-      false
-    isValidEmail ? this.setState({ isSignupEmailError: "dispNone" }) : this.setState({ isSignupEmailError: "dispBlock" });
-    let errorMessage = !email.length > 0 ? "required" : "Invalid Email"
-    this.setState({ signupEmailErrorMessage: errorMessage })
-    return isValidEmail;
+    let isValidEmail = email.length > 0 ? (validator.isEmail(email) ? true : false) : false
+    isValidEmail ? this.setState({ emailRequired: "dispNone" }) : 
+                   this.setState({ emailRequired: "dispBlock", invalidSignUpEmail : "Invalid Email"});
+    return isValidEmail
   }
 
-  //Sign up Form - Password Validation
   validateSignupPassword = () => {
-    let password = this.state.passwordregister;
-    let isValidPassword = password.length > 0 ?
-      (validator.isStrongPassword(password) ? true : false)
-      :
-      false
-    isValidPassword ? this.setState({ isSignupPasswordError: "dispNone" }) : this.setState({ isSignupPasswordError: "dispBlock" })
-    let errorMessage = !password.length > 0
-      ?
-      "required"
-      :
-      "Password must contain at least one capital letter, one small letter, one number, and one special character"
-    this.setState({ signupPasswordErrorMessage: errorMessage })
-    return isValidPassword;
+    let password = this.state.signUpPassword;
+    let isValidPassword = password.length > 0 ? (validator.isStrongPassword(password) ? true : false) : false
+    isValidPassword ? this.setState({ signUpPasswordRequired: "dispNone" }) : 
+                      this.setState({ signUpPasswordRequired: "dispBlock", 
+                      invalidSignUpPassword : "Password must contain at least one capital letter, one small letter, one number, and one special character"});
+    return isValidPassword
   }
 
-  //Sign up form - Contact no Validation
   validateContactnoSignUp = () => {
-    let contactno = this.state.contactNoSignup;
-    let isValidContactno = contactno.length > 0 ?
-      (validator.isMobilePhone(contactno) && contactno.length === 10 ? true : false)
-      :
-      false
-    isValidContactno ? this.setState({ isSignupContactnoError: "dispNone" }) : this.setState({ isSignupContactnoError: "dispBlock" })
-    let errorMessage = !contactno.length > 0
-      ?
-      "required"
-      :
-      "Contact No. must contain only numbers and must be 10 digits long"
-    this.setState({ signupContactnoErrorMessage: errorMessage })
+    let contactno = this.state.mobile;
+    let isValidContactno = contactno.length > 0 ? (validator.isMobilePhone(contactno) && contactno.length === 10 ? true : false) : false
+    isValidContactno ? this.setState({ mobileRequired: "dispNone" }) : 
+                       this.setState({ mobileRequired: "dispBlock", invalidSignUpContactNo: "Contact No. must contain only numbers and must be 10 digits long"})
     return isValidContactno;
-
   }
 
+  validateSignUpInputs = () => {
+    // first reset the outputs to default
+    this.resetSignUpOutputs();
+    this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
+    this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
+    this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
+    this.state.signUpPassword === "" ? this.setState({ signUpPasswordRequired: "dispBlock" }) : this.setState({ signUpPasswordRequired: "dispNone" });
+    this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
+    
+    if (this.state.firstname === "" || this.state.lastname === "" || this.state.email === "" || this.state.signUpPassword === "" || this.state.mobile === "") {
+      return false 
+    } else {
+      let isSignupEmailValid = this.validateEmail();
+      let isSignupPasswordValid = this.validateSignupPassword();
+      let isSignupContactnoValid = this.validateContactnoSignUp();
+      if (!(isSignupEmailValid && isSignupPasswordValid && isSignupContactnoValid)) {
+        return false
+      }
+    }
+    return true
+
+  }
 
 
   //Signup handler
   signUpClickHandler = () => {
-    this.setState({ signUpErrorMsg: "" });
-    this.setState({ signUpErrCode: "" });
-    
-    // validating the sign up parameters
-    if (!this.validateSignUpParameters()) {
-      return
+    //validating the signup outputs
+
+    // validating login inputs
+    if (!this.validateSignUpInputs()) {
+       return
     }
 
     let that = this;
@@ -297,22 +313,11 @@ class Header extends Component {
     this.setState({ firstname: "" });
     this.setState({ lastname: "" });
     this.setState({ mobile: "" });
-    this.setState({ signUpErrorMsg: "" });
-    this.setState({ signUpErrCode: "" });
     this.setState({ signUpPassword: "" });
-    this.setState({ invalidContactNo: "" });
-    this.setState({ loginErrCode: "" });
-    this.setState({ loginErrorMsg: "" });
-    this.setState({ usernameRequired: "dispNone" });
-    this.setState({ passwordRequired: "dispNone" });
-    this.setState({ loginError: "dispNone" });
-    this.setState({ signupError: "dispNone" });
-    this.setState({ emailRequired: "dispNone" });
-    this.setState({ firstnameRequired: "dispNone" });
-    this.setState({ lastnameRequired: "dispNone" });
-    this.setState({ mobileRequired: "dispNone" });
-    this.setState({ signUpPasswordRequired: "dispNone" });
-    this.setState({ loginErrorMsg: "" });
+    this.setState({ username: ""});
+    this.setState({ password: ""});
+    this.resetLoginOutputs();
+    this.resetSignUpOutputs();
   }
 
   //Close only modal and keep snack bar open
@@ -442,8 +447,7 @@ class Header extends Component {
 
                 <InputLabel htmlFor="username"> Contact No. </InputLabel>
                 <Input id="username" type="text" username={this.state.username} value={this.state.username} onChange={this.changeUsernameHandler} />
-                <FormHelperText className={this.state.usernameRequired}><span className="red">required</span></FormHelperText>
-                <Typography variant="subtitle1" color="error" align="left">{this.state.invalidContactNo}</Typography>
+                <FormHelperText className={this.state.usernameRequired}><span className="red">{this.state.invalidContactNo}</span></FormHelperText>
 
               </FormControl><br /><br />
 
@@ -451,7 +455,7 @@ class Header extends Component {
 
                 <InputLabel htmlFor="password"> Password </InputLabel>
                 <Input id="password" type="password" value={this.state.password} onChange={this.changePasswordHandler} />
-                <FormHelperText className={this.state.passwordRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.passwordRequired}><span className="red">{this.state.invalidPassword}</span></FormHelperText>
 
               </FormControl><br /><br />
               {this.state.loginErrCode === "ATH-001" || this.state.loginErrCode === "ATH-002" ?
@@ -466,19 +470,19 @@ class Header extends Component {
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="firstname">First Name</InputLabel>
                 <Input id="firstname" type="text" onChange={this.changeFirstNameHandler} value={this.state.firstname} />
-                <FormHelperText className={this.state.firstnameRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.firstnameRequired}><span className="red">{this.state.invalidSignUpFirstname}</span></FormHelperText>
               </FormControl><br /><br />
 
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
                 <Input id="lastname" type="text" onChange={this.changeLastNameHandler} value={this.state.lastname} />
-                <FormHelperText className={this.state.lastnameRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.lastnameRequired}><span className="red">{this.state.invalidSignUpLastname}</span></FormHelperText>
               </FormControl><br /><br />
 
               <FormControl required className={classes.formControl}>
                 <InputLabel htmlFor="email">Email</InputLabel>
                 <Input id="email" type="email" onChange={this.changeEmailHandler} value={this.state.email} />
-                <FormHelperText className={this.state.emailRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.emailRequired}><span className="red">{this.state.invalidSignUpEmail}</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-002" ?
                   <FormControl className={classes.formControl}>
                     <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Invalid Email</Typography>
@@ -488,7 +492,7 @@ class Header extends Component {
               <FormControl required aria-describedby="name-helper-text" className={classes.formControl}>
                 <InputLabel htmlFor="signUpPassword">Password</InputLabel>
                 <Input type="password" id="signUpPassword" value={this.state.signUpPassword} onChange={this.changeSignUpPasswordHandler} />
-                <FormHelperText className={this.state.signUpPasswordRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.signUpPasswordRequired}><span className="red">{this.state.invalidSignUpPassword}</span></FormHelperText>
                 {this.state.signUpErrCode === "SGR-004" ?
                   <FormControl className={classes.formControl}>
                     <Typography variant="subtitle1" color="error" className={this.state.signupError} align="left">Password must contain at least one capital letter, one small letter, one number, and one special character</Typography>
@@ -499,7 +503,7 @@ class Header extends Component {
 
                 <InputLabel htmlFor="mobile">Contact No.</InputLabel>
                 <Input id="mobile" type="number" onChange={this.changeMobileHandler} value={this.state.mobile} />
-                <FormHelperText className={this.state.mobileRequired}><span className="red">required</span></FormHelperText>
+                <FormHelperText className={this.state.mobileRequired}><span className="red">{this.state.invalidSignUpContactNo}</span></FormHelperText>
 
                 {this.state.signUpErrCode === "SGR-003" ?
                   <FormControl className={classes.formControl}>
