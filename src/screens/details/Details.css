@@ -118,6 +118,10 @@ display: flex;
 align-items: center;
 
 }
+.total-price{
+    display:flex;
+    align-items: baseline;
+}
 
 /* Style for the total amount container */
 .total-amount-container{
@@ -174,4 +178,7 @@ justify-content: space-between;
 display: flex;
 align-items: center;
 margin-left: auto;
+}
+#minus-button{
+    margin-left:auto;
 }
