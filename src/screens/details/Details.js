@@ -1,17 +1,13 @@
 import React, { Component } from "react";
-import Typography from '@material-ui/core/Typography';
-import { withStyles, CardContent } from '@material-ui/core';
+import Header from "../../common/header/Header";
+//********************************************************************************************************************************* */
+//                                    CSS Imports
+//*********************************************************************************************************************************
 import './Details.css'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/free-regular-svg-icons'
-import '@fortawesome/free-brands-svg-icons'
-import '@fortawesome/free-solid-svg-icons'
-import '@fortawesome/fontawesome-free/css/fontawesome.min.css'
 import "font-awesome/css/font-awesome.min.css";
-
-
+//********************************************************************************************************************************* */
+//                                    Material Ui Core Imports
+//*********************************************************************************************************************************
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import Fade from '@material-ui/core/Fade';
@@ -25,10 +21,11 @@ import Button from '@material-ui/core/Button';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
+import Typography from '@material-ui/core/Typography';
+import { withStyles, CardContent } from '@material-ui/core';
 
 // Custom Styles to over ride material ui default styles
 const styles = (theme => ({
-
     textRatingCost: { //Style for the Text of the Rating and cost.
         'text-overflow': 'clip',
         'width': '145px',
@@ -49,6 +46,9 @@ const styles = (theme => ({
     }
 }
 ));
+//**************************************************************************************************************************** */
+// Details Class 
+//****************************************************************************************************************************
 class Details extends Component {
     constructor() {
         super()
@@ -65,20 +65,17 @@ class Details extends Component {
     }
 
     componentDidMount() {
+        console.log("Inside Details");
         let data = null;
         let that = this;
         let xhrRestaurantDetails = new XMLHttpRequest()
-
-
         xhrRestaurantDetails.addEventListener("readystatechange", function () {
             if (xhrRestaurantDetails.readyState === 4 && xhrRestaurantDetails.status === 200) {
                 let response = JSON.parse(xhrRestaurantDetails.responseText);
                 let categoriesName = [];
-                //Creating array of category.
                 response.categories.forEach(category => {
                     categoriesName.push(category.category_name);
                 });
-                //Creating Restaurant object containing relevant details.
                 let restaurantDetails = {
                     id: response.id,
                     name: response.restaurant_name,
@@ -99,26 +96,23 @@ class Details extends Component {
             }
 
         })
-        //Calling the api to get details of the restaurant by id.
-        xhrRestaurantDetails.open('GET', 'http://localhost:8080/api/restaurant/359f7e8a-a23b-11e8-9077-720006ceb890')
+        xhrRestaurantDetails.open('GET', this.props.baseUrl + "restaurant/" + this.props.match.params.id)
         xhrRestaurantDetails.send(data);
     }
-
-
+//**************************************************************************************************************************** */
+// Method for adding item to cart 
+//****************************************************************************************************************************
     itemAddButtonClickHandler = (item) => {
         let cartItems = this.state.cartItems;
         let itemPresentInCart = false;
         cartItems.forEach((cartItem) => {
-            //running a loop to find if the item is already present in the cart.
             if (cartItem.id === item.id) {
-                // Checking if the parameter item.id matches with the item in the cart.
                 itemPresentInCart = true;
-                cartItem.quantity++; //increasing only the quantity
-                cartItem.totalAmount = cartItem.price * cartItem.quantity; //Updating the price
+                cartItem.quantity++;
+                cartItem.totalAmount = cartItem.price * cartItem.quantity;
             }
         });
         if (!itemPresentInCart) {
-            //Checking if the item is present if not then new item is created and pushed to the cart.
             let cartItem = {
                 id: item.id,
                 name: item.item_name,
@@ -129,13 +123,10 @@ class Details extends Component {
             };
             cartItems.push(cartItem);
         }
-        //updating the total amount for the cart.
         let totalAmount = 0;
         cartItems.forEach((cartItem) => {
             totalAmount = totalAmount + cartItem.totalAmount;
         });
-
-        //Updating the state.
         this.setState({
             ...this.state,
             cartItems: cartItems,
@@ -144,22 +135,21 @@ class Details extends Component {
             totalAmount: totalAmount,
         });
     };
-
+//*****************************************************************************************************************************/
+// Method for removing item to cart 
+//*****************************************************************************************************************************/
     minusButtonClickHandler = (item) => {
         let cartItems = this.state.cartItems;
         let index = cartItems.indexOf(item);
         let itemRemoved = false;
-        cartItems[index].quantity--; //Reducing the quantity of the item
+        cartItems[index].quantity--;
         if (cartItems[index].quantity === 0) {
-            //Checking if the quantity is zero to remove from the cart
             cartItems.splice(index, 1);
             itemRemoved = true;
         } else {
             cartItems[index].totalAmount =
-                cartItems[index].price * cartItems[index].quantity; //Updating the Price of the item
+                cartItems[index].price * cartItems[index].quantity;
         }
-
-        // updating the total amount of the cart
         let totalAmount = 0;
         cartItems.forEach((cartItem) => {
             totalAmount = totalAmount + cartItem.totalAmount;
@@ -176,7 +166,9 @@ class Details extends Component {
             totalAmount: totalAmount,
         });
     };
-
+//*****************************************************************************************************************************/
+// Method for checkout item from cart only if user is logged in
+//*****************************************************************************************************************************/
     checkOutButtonClickHandler = () => {
         let cartItems = this.state.cartItems;
         let isLoggedIn =
@@ -189,14 +181,12 @@ class Details extends Component {
             snackBarMessage: "Please add an item to your cart!",
           });
         } else if (!isLoggedIn) {
-          //Checking if customer is not loggedIn.
           this.setState({
             ...this.state,
             snackBarOpen: true,
             snackBarMessage: "Please login first!",
           });
         } else {
-          //If all the condition are satisfied user pushed to the checkout screen
           this.props.history.push({
             pathname: "/checkout",
             cartItems: this.state.cartItems,
@@ -205,8 +195,9 @@ class Details extends Component {
         }
       };
     
-
-    //Snackbar close handler
+//*****************************************************************************************************************************/
+// Snackbar method handler
+//*****************************************************************************************************************************/
     snackBarClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -221,6 +212,14 @@ class Details extends Component {
     render() {
         const { classes } = this.props;
         return (
+            <div>
+                <Header>
+                history={this.props.history}
+                baseUrl={this.props.baseUrl}
+                showHeaderSearchBox={false}
+                changeBadgeVisibility={this.changeBadgeVisibility}
+                </Header>
+            
             <div className="shopping-list">
                 <div className="panel-restaurant-details">
                     <div>
@@ -346,7 +345,7 @@ class Details extends Component {
                                 className={classes.cartHeader}
                             />
                             <CardContent className={classes.cardContent}>
-                                {this.state.cartItems.map(cartItem => ( //Iterating over each item in cartItem to show in the cart.
+                                {this.state.cartItems.map(cartItem => ( 
                                     <div className="cart-menu-item-container" key={cartItem.id}>
                                         <i  className="fa fa-stop-circle-o" 
                                             aria-hidden="true"
@@ -435,9 +434,8 @@ class Details extends Component {
                     </div>
                 </div>
             </div>
+            </div>
         );
     }
 }
-
-
 export default withStyles(styles)(Details);
