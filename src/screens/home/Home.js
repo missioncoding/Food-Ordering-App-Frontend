@@ -10,6 +10,60 @@ const styles = {
     restaurantCard: { width: "90%", cursor: "pointer" }
 };
 
+const createRequestURL = (url, paramObj) => {
+    if (!(paramObj === undefined || paramObj === null)) {
+      let paramString = "";
+      for (let key in paramObj) {
+        if (paramString !== "") {
+            paramString += "&";
+        }
+        paramString += key + "=" + encodeURIComponent(paramObj[key]);
+      }
+      url += "?" + paramString;
+    }
+    return url;
+  };
+
+
+const invokeAPI = (
+    requestUrl,
+    paramObj,
+    requestBodyObj,
+    requestType,
+    requestHeadersObj,
+    successCallback,
+    failCallback
+  ) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open(
+      requestType,
+      createRequestURL(requestUrl, paramObj)
+    );
+    if (!(requestHeadersObj === undefined || requestHeadersObj === null)) {
+      for (let key in requestHeadersObj) {      
+        if (!(requestHeadersObj[key] === undefined || requestHeadersObj[key] === null || requestHeadersObj[key] === "")) {
+          xhr.setRequestHeader(key, requestHeadersObj[key]);
+        }
+      }
+    }
+    (requestBodyObj === undefined || requestBodyObj === null)
+      ? xhr.send()
+      : xhr.send(JSON.stringify(requestBodyObj));
+    xhr.addEventListener("readystatechange", function() {
+      if (this.readyState === 4) {
+        if (xhr.status === 200) {
+          if (!(successCallback === undefined || successCallback === null)) {
+            successCallback(this.responseText, this.getAllResponseHeaders());
+          }
+        } else {
+          if (!(failCallback === undefined || failCallback === null)) {
+            failCallback(this.responseText);
+          }
+        }
+      }
+    });
+  };
+
 class Home extends Component {
 
     constructor() {
@@ -28,6 +82,21 @@ class Home extends Component {
         const requestUrl = this.props.baseUrl + "restaurant";
         const that = this;
         // make api call here
+        invokeAPI(
+            requestUrl,
+            null,
+            null,
+            "GET",
+            null,
+            responseText => {
+                that.setState(
+                    {
+                        restaurantData: JSON.parse(responseText).restaurants
+                    }
+                );
+            },
+            () => { }
+        );
     };
 
     // redirects to login
@@ -45,6 +114,25 @@ class Home extends Component {
         const requestUrl = this.props.baseUrl + "restaurant/name/" + searchValue;
         const that = this;
         // make api call here
+        if (!(!(searchValue === undefined || searchValue === null) && searchValue === "")) {
+            invokeAPI(
+                requestUrl,
+                null,
+                null,
+                "GET",
+                null,
+                responseText => {
+                    that.setState(
+                        {
+                            restaurantData: JSON.parse(responseText).restaurants
+                        }
+                    );
+                },
+                () => { }
+            );
+        } else {
+            this.getAllRestaurantsData();
+        }
     };
 
     render() {
