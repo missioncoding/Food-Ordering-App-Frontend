@@ -317,18 +317,28 @@ class Header extends Component {
     this.setState({ password: ""});
     this.resetLoginOutputs();
     this.resetSignUpOutputs();
+    if(this.props.changeBadgeVisibility){
+      this.props.changeBadgeVisibility();
+  }
   }
 
   //Close only modal and keep snack bar open
   closeOnlyModalHandler = () => {
     this.setState({ isModalOpen: false });
     this.setState({ isSnackBarOpen: true });
+    if(this.props.changeBadgeVisibility){
+            this.props.changeBadgeVisibility();
+        }
   }
 
   //Close modal and snack bar
   closeHandler = () => {
     this.setState({ isModalOpen: false });
     this.setState({ isSnackBarOpen: false });
+    if(this.props.changeBadgeVisibility)
+    {
+      this.props.changeBadgeVisibility();
+      }
   }
 
   // handler to toggle between signup and login tabs
