@@ -194,7 +194,22 @@ class Details extends Component {
           });
         }
       };
-    
+
+    // redirects to login
+    logoutHandler = () => {
+        sessionStorage.clear();
+        this.props.history.push({
+            pathname: '/'
+        });
+        window.location.reload();
+    }
+    //this method changes the visibility of badge when the modal is open in the details page.
+  changeBadgeVisibility = () => {
+    this.setState({
+      ...this.state,
+      badgeVisible: !this.state.badgeVisible,
+    });
+  };
 //*****************************************************************************************************************************/
 // Snackbar method handler
 //*****************************************************************************************************************************/
@@ -213,12 +228,12 @@ class Details extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <Header>
+                <Header
                 history={this.props.history}
                 baseUrl={this.props.baseUrl}
-                showHeaderSearchBox={false}
                 changeBadgeVisibility={this.changeBadgeVisibility}
-                </Header>
+                logoutHandler={this.logoutHandler} 
+                />
             
             <div className="shopping-list">
                 <div className="panel-restaurant-details">
