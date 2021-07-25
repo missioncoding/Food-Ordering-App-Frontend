@@ -16,11 +16,11 @@ class Controller extends Component {
             <Router>
                 <div className= "main-container">
                     <Route exact path="/" render={props=> <Home {...props} baseUrl={this.baseUrl}/>} />
-                    { <Route exact path='/checkout' render={({history},props) => (
+                    { <Route exact path='/checkout' render={(props) => (
                         sessionStorage.getItem('access-token') == null ? (
                             <Redirect to='/' />
                         ) : (
-                                <Checkout {...props} baseUrl={this.baseUrl} history={history} />
+                                <Checkout {...props} baseUrl={this.baseUrl} />
                             )
                     )} /> }
                     <Route exact path='/restaurant/:id' render={(props) => <Details {...props} baseUrl={this.baseUrl}/>} />

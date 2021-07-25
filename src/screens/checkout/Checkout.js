@@ -204,25 +204,31 @@ onStateChange = (event) => {
 
 componentDidMount(){
 this.mounted = true;
-}
-
-
-componentWillMount(){
-  try{
-    console.log(this.props.history.location.state.chcartItems.ItemList);
-    this.setState({chcartItems:this.props.history.location.state.chcartItems});
+this.setState({chcartItems:this.props.history.location.state.cartItems});
     this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
     this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
     this.getAddresses(baseURL, access_token);
     this.getPaymentMethods();
-    this.getStates();
-  } catch {
-    this.mounted = false;
-    this.props.history.push({
-      pathname: "/"
-     });
-  }
 }
+
+
+// componentWillMount(){
+//   console.log(this.props);
+//   try{
+//     console.log(this.props.history.location.state.chcartItems.ItemList);
+//     this.setState({chcartItems:this.props.history.location.state.chcartItems});
+//     this.setState({totalCartItemsValue:this.props.history.location.state.totalCartItemsValue});
+//     this.setState({resDetails:JSON.parse(sessionStorage.getItem("restaurantDetails"))});
+//     this.getAddresses(baseURL, access_token);
+//     this.getPaymentMethods();
+//     this.getStates();
+//   } catch {
+//     this.mounted = false;
+//     this.props.history.push({
+//       pathname: "/"
+//      });
+//   }
+// }
 
 
 onExistingAddressTab=()=>{
@@ -311,7 +317,8 @@ if(sessionStorage.getItem("selAddress")==="null" || sessionStorage.getItem("selA
 }
 
 //When order is placed,  checkout with order id 
-let orders = this.state.chcartItems.itemList;      
+console.log(this.props);
+let orders = this.state.chcartItems;      
 let dataCheckout = JSON.stringify({                  
     "address_id": sessionStorage.getItem("selected"),
     "bill": this.state.totalCartItemsValue,
@@ -320,13 +327,13 @@ let dataCheckout = JSON.stringify({
     "item_quantities":
       orders.map(item => (
         {
-        "item_id":  item.item.id,
-        "price" : item.item.price,
+        "item_id":  item.id,
+        "price" : item.price,
         "quantity" : item.quantity
         }))
     ,
     "payment_id": sessionStorage.getItem("paymentMethod"),
-    "restaurant_id": JSON.parse(sessionStorage.getItem("restaurantDetails")).id     
+    "restaurant_id": this.props.location.state.restaurantDetails.id    
 })       
 let that = this;
 let access_token = sessionStorage.getItem("access-token");
@@ -633,7 +640,7 @@ render(){
         <Grid  item xs={8} md={3}>
         <Card >        
             <CardHeader style={{fontWeight:"bolder"}} title="Summary" titleTypographyProps={{ variant: 'h4' }} />
-            <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.state.resDetails.restaurant_name}</div>
+            <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.props.location.state.restaurantDetails.name}</div>
             <CardContent>
             <Grid
                 container
@@ -641,14 +648,14 @@ render(){
                 justify="space-between"
                 alignItems="center"
              >
-        {this.props.history.location.state.chcartItems.itemList.map((item, index) => {
+        {this.props.history.location.state.cartItems.map((item, index) => {
         return(
                <Grid style={{marginLeft:"3%", color:"grey", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
-                   {item.item.item_type === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
+                   {item.itemType === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
                </Grid>
                <Grid item xs={6}>
-                   <span style={{color:"grey", textTransform:"capitalize", fontSize:20, marginLeft:8}}>{item.item.item_name}</span>                        
+                   <span style={{color:"grey", textTransform:"capitalize", fontSize:20, marginLeft:8}}>{item.name}</span>                        
                </Grid>
                <Grid item xs={1}>
                    {item.quantity}                      
@@ -656,7 +663,7 @@ render(){
                <Grid item xs={1}>               
                </Grid>
                <Grid  item xs={2}>
-               <i className="fa fa-inr"></i><span>  {item.item.price}</span>                        
+               <i className="fa fa-inr"></i><span>  {item.price}</span>                        
                </Grid>
                </Grid>);
                })
@@ -677,7 +684,7 @@ render(){
                         </Grid>
                         <Grid item xs={3}>
                         <Typography style={{marginLeft:"3%",fontSize:"140%",fontWeight:"bold"}}>                                                       
-                        <i style={{color:"grey"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalCartItemsValue}</span>
+                        <i style={{color:"grey"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalAmount}</span>
                         </Typography>
                         </Grid>
                     </Grid>

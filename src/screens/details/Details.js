@@ -56,6 +56,13 @@ const styles = (theme => ({
         'color' : 'grey',
         'text-transform' : 'capitalize'
     },
+    shoppingCart:{
+        'color' : 'black',
+        'background-color': 'white',
+        'border-radius': '0px',
+        'width' : '50px',
+        'height' : '50px'
+    },
     cartItemButton: { 
         'padding': '10px',
         '&:hover': {
@@ -167,6 +174,7 @@ class Details extends Component {
         let cartItems = this.state.cartItems;
         let index = cartItems.indexOf(item);
         let itemRemoved = false;
+        let prevItems = this.state.totalItems
         cartItems[index].quantity--;
         if (cartItems[index].quantity === 0) {
             cartItems.splice(index, 1);
@@ -189,6 +197,7 @@ class Details extends Component {
                 ? "Item removed from cart!"
                 : "Item quantity decreased by 1!",
             totalAmount: totalAmount,
+            totalItems : prevItems - 1
         });
     };
 //*****************************************************************************************************************************/
@@ -216,7 +225,8 @@ class Details extends Component {
                 pathname: '/checkout/',
                 state: {
                     cartItems: this.state.cartItems,
-                    restaurantDetails: this.state.restaurantDetails
+                    restaurantDetails: this.state.restaurantDetails,
+                    totalAmount: this.state.totalAmount
                 }
             })
         }
