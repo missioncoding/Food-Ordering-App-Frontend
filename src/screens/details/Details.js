@@ -225,8 +225,7 @@ class Details extends Component {
                 pathname: '/checkout/',
                 state: {
                     cartItems: this.state.cartItems,
-                    restaurantDetails: this.state.restaurantDetails,
-                    totalAmount: this.state.totalAmount
+                    restaurantDetails: this.state.restaurantDetails
                 }
             })
         }

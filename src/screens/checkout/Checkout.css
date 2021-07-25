@@ -1,56 +1,102 @@
-.gridListMain{
+/* Style for the Checkout container containing stepper and order summary card */
+.checkout-container{
+    display:flex;
+    padding-top: 20px;
+    padding-right:16px; 
+    justify-content: space-between;
+}
+
+/* Responsive code for small screen size */
+@media screen and (max-width:670px){
+    .checkout-container{
+        flex-direction: column;
+        padding: 20px 16px;
+    }
+    .stepper-container{
+        width: 100%;
+        padding: 0px;
+    }
+    .summary-container{
+        width:100%;
+        margin-top: 5px;
+    }
+}
+
+
+@media (min-width:670px) and (max-width:1200px){
+    .stepper-container{
+        width: 60%;
+    }
+    .summary-container{
+        width:40%;
+        margin-top: 5px;
+    }
+}
+
+/* Responsive code */
+@media screen and (min-width:1200px){
+    .stepper-container{
+      width: 74%;
+    }
+    .summary-container{
+        width:25%;
+        margin-top: 5px;
+    }
+}
+
+.address-tabs{
+    background-color: rgb(63,81,180);
+    color: white;
+    height:50px;
+}
+
+/* Style for the grid */
+.grid-list-tile-container{
+    padding:16px 8px 16px 16px;
+}
+
+/* Style to hide the element */
+.dispNone {
+    display: none;
+}
+
+/* Style to show the element */
+.dispBlock {
+    display: block;
+}
+
+/* Style for the menu item container */
+.menu-item-container{
     display: flex;
-    flex-wrap:nowrap !important;
-    transform: translateZ(0);
-    height:400px;
-    width: 1000px !important;
-    
-    }
-    
-    
-    
-    .gridListTile{
-    margin-top: 1%;
-    width:33% !important;
-    height:90% !important;
-    margin-left: 1%;
-    box-shadow:2px -3px 6px 3px grey;
-    }
-    
-    
-    .selectedAddress{
-    margin-top: 1%;
-    width:33% !important;
-    height:90% !important;
-    margin-left: 1%;
-    box-shadow:2px -3px 6px 3px #f50057;
-    }
-    .selectAddresscircle{
-    margin-left: 80% !important;
-    }
-    
-    
-    .addressCard{
-    height:290px !important;
-    }
-    
-  
-    .dispNone{
-        display: none;
-    }
-    
-    .dispText{
-        display: block;
-        font-size: 30px;
-        margin-left:4%;
-    }
-    
-   
-    @media only screen and (max-width: 1400px) {
-    .saveAddressButton{
-        width:140px !important;
-    }
-    
-    
-    }
-   
+    align-items: center;
+}
+
+/* Style for the Suammry item price container */
+.summary-item-price-container{
+    display:flex;
+    align-items: baseline;
+    color: grey;
+}
+
+/* Style for the Coupon Conatiner */
+.coupon-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+
+/* Style for the label  */
+.label-amount-container{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 10px 0px;
+}
+
+/* Style for the Summary  amount */
+.amount{
+    display:flex;
+    align-items: baseline;
+}
