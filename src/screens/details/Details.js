@@ -375,7 +375,7 @@ class Details extends Component {
 
                                         </div>
                                         <div className="item-price">
-                                            <i class="fa-solid fa-indian-rupee-sign"></i>
+                                            <i className="fa-solid fa-indian-rupee-sign"></i>
                                             <Typography variant="subtitle1" 
                                                         component="p" 
                                                         className={classes.itemPrice} 

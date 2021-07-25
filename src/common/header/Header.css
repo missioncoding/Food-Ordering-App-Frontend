@@ -61,12 +61,11 @@
   border-radius: 4px;
   width: 300px;
   margin-right: 16px;
-  padding: 4px;
+  padding: 4px 4px 4px 0px;
   height: 50%;
 }
 
 .search-icon {
-  padding: 0 7px;
   align-self: center;
 }
 
