@@ -61,6 +61,7 @@ class Details extends Component {
             snackBarMessage: "",
             transition: Fade,
             badgeVisible: false,
+            totalItems : 0
         }
     }
 
@@ -105,6 +106,7 @@ class Details extends Component {
     itemAddButtonClickHandler = (item) => {
         let cartItems = this.state.cartItems;
         let itemPresentInCart = false;
+        let prevItems = this.state.totalItems
         cartItems.forEach((cartItem) => {
             if (cartItem.id === item.id) {
                 itemPresentInCart = true;
@@ -133,7 +135,9 @@ class Details extends Component {
             snackBarOpen: true,
             snackBarMessage: "Item added to cart!",
             totalAmount: totalAmount,
+            totalItems : prevItems + 1
         });
+        
     };
 //*****************************************************************************************************************************/
 // Method for removing item to cart 
@@ -187,11 +191,13 @@ class Details extends Component {
             snackBarMessage: "Please login first!",
           });
         } else {
-          this.props.history.push({
-            pathname: "/checkout",
-            cartItems: this.state.cartItems,
-            restaurantDetails: this.state.restaurantDetails,
-          });
+            this.props.history.push({
+                pathname: '/checkout/',
+                state: {
+                    cartItems: this.state.cartItems,
+                    restaurantDetails: this.state.restaurantDetails
+                }
+            })
         }
       };
 
@@ -344,7 +350,7 @@ class Details extends Component {
                             <CardHeader
                                 avatar={
                                     <Avatar aria-label="shopping-cart" className={classes.shoppingCart}>
-                                        <Badge  badgeContent={this.state.cartItems.length} 
+                                        <Badge  badgeContent={this.state.totalItems} 
                                                 color="primary" 
                                                 showZero={true} 
                                                 invisible={this.state.badgeVisible} 
