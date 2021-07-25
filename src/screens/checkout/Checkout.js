@@ -559,7 +559,7 @@ class Checkout extends Component {
         ...this.state,
         snackBarOpen: true,
         snackBarMessage:
-          "Order already placed with order ID is " + this.state.orderIdPlaced,
+          "Order already placed with order ID " + this.state.orderIdPlaced,
       });
       return;
     }
@@ -1019,6 +1019,7 @@ class Checkout extends Component {
                     variant="subtitle2"
                     component="p"
                     className={classes.netAmount}
+                    style={{fontWeight: "bold"}}
                   >
                     Net Amount
                   </Typography>
@@ -1033,6 +1034,7 @@ class Checkout extends Component {
                       component="p"
                       className={classes.itemPrice}
                       id="summary-net-amount"
+                      style={{fontWeight: "bold"}}
                     >
                       {this.getNetAmount().toFixed(2)}
                     </Typography>

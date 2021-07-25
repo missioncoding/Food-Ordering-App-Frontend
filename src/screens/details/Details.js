@@ -331,7 +331,7 @@ class Details extends Component {
                                         {this.state.restaurantDetails.avgCost}
                                     </Typography>
                                 </div>
-                                <Typography variant="caption" component="p"  >AVERAGE COST FOR TWO PEOPLE</Typography>
+                                <Typography variant="caption" component="p"  style={{color:"grey"}}>AVERAGE COST FOR TWO PEOPLE</Typography>
                             </div>
                         </div>
                     </div>
