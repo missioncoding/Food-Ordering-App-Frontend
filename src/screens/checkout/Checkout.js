@@ -199,7 +199,9 @@ class Checkout extends Component {
       cartItems: [],
       restaurantDetails: [],
       coupon: null,
-      couponName: ""
+      couponName: "",
+      orderPlaced : false,
+      orderIdPlaced : ""
     };
   }
 
@@ -551,6 +553,16 @@ class Checkout extends Component {
 
   // This method is called when the placeOrderButton is Clicked.
   placeOrderButtonClickHandler = () => {
+    // checking whether order is already placed
+    if (this.state.orderPlaced) {
+      this.setState({
+        ...this.state,
+        snackBarOpen: true,
+        snackBarMessage:
+          "Order already placed with order ID is " + this.state.orderIdPlaced,
+      });
+      return;
+    }
     let item_quantities = [];
     this.state.cartItems.forEach((cartItem) => {
       item_quantities.push({
@@ -575,6 +587,8 @@ class Checkout extends Component {
       if (xhrOrder.readyState === 4) {
         if (xhrOrder.status === 201) {
           let responseOrder = JSON.parse(xhrOrder.responseText);
+          that.setState({"orderIdPlaced" : responseOrder.id,
+                          "orderPlaced" : true})
           that.setState({
             ...that.state,
             snackBarOpen: true,
