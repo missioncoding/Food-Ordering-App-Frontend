@@ -196,7 +196,6 @@ xhrPayments.send(data);
 }
 
 
-
 onStateChange = (event) => {
   this.setState({selected:event.target.value})
 };
@@ -321,7 +320,7 @@ console.log(this.props);
 let orders = this.state.chcartItems;      
 let dataCheckout = JSON.stringify({                  
     "address_id": sessionStorage.getItem("selected"),
-    "bill": this.state.totalCartItemsValue,
+    "bill": this.props.location.state.totalAmount,
     "coupon_id": "",
     "discount": 0,
     "item_quantities":
@@ -334,7 +333,9 @@ let dataCheckout = JSON.stringify({
     ,
     "payment_id": sessionStorage.getItem("paymentMethod"),
     "restaurant_id": this.props.location.state.restaurantDetails.id    
-})       
+    
+})   
+console.log(dataCheckout);   
 let that = this;
 let access_token = sessionStorage.getItem("access-token");
 let xhrCheckout = new XMLHttpRequest();
@@ -640,7 +641,7 @@ render(){
         <Grid  item xs={8} md={3}>
         <Card >        
             <CardHeader style={{fontWeight:"bolder"}} title="Summary" titleTypographyProps={{ variant: 'h4' }} />
-            <div style={{marginLeft:"3%",fontSize:"200%", color:"grey",fontWeight:"bold"}}>{this.props.location.state.restaurantDetails.name}</div>
+            <div style={{marginLeft:"3%",fontSize:"200%", color:"grey"}}>{this.props.location.state.restaurantDetails.name}</div>
             <CardContent>
             <Grid
                 container
@@ -652,10 +653,13 @@ render(){
         return(
                <Grid style={{marginLeft:"3%", color:"grey", fontSize:"18px"}}container item xs={12} spacing={1} key={index}>
                <Grid item xs={1}>
-                   {item.itemType === 'VEG' ?  <FiberManualRecord style={{ color: "#008000" }}/> : <FiberManualRecord style={{ color: "#b20505" }}/>}
-               </Grid>
-               <Grid item xs={6}>
-                   <span style={{color:"grey", textTransform:"capitalize", fontSize:20, marginLeft:8}}>{item.name}</span>                        
+               <i className="fa fa-stop-circle-o" 
+                                            aria-hidden="true"
+                                            style={{ color: item.itemType === "NON_VEG" ? "#BE4A47" : "#5A9A5B", }}>
+                                        </i>
+                 </Grid>
+               <Grid item xs={7}>
+                   <span style={{color:"grey", textTransform:"capitalize", fontSize:20, marginLeft:5 }}>{item.name}</span>                        
                </Grid>
                <Grid item xs={1}>
                    {item.quantity}                      
@@ -676,15 +680,15 @@ render(){
                  </Grid>
                     <Grid container item xs={12} >
                         <Grid item xs={5}>
-                            <Typography style={{marginLeft:"14%",fontSize:"140%",fontWeight:"bold"}} >
+                            <Typography style={{marginLeft:"14%",fontSize:"110%"}} >
                             Net Amount
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>                            
                         </Grid>
                         <Grid item xs={3}>
-                        <Typography style={{marginLeft:"3%",fontSize:"140%",fontWeight:"bold"}}>                                                       
-                        <i style={{color:"grey"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalAmount}</span>
+                        <Typography style={{marginLeft:"3%",fontSize:"110%"}}>                                                       
+                        <i style={{color:"black"}}className="fa fa-inr"></i><span>  {this.props.history.location.state.totalAmount}</span>
                         </Typography>
                         </Grid>
                     </Grid>
