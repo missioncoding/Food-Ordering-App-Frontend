@@ -10,8 +10,8 @@ import { withRouter } from 'react-router-dom';
 
 class Restaurant extends Component {
 
-	clickCardHandler = (id) => {
-		let detailsPageUrl = '/restaurant/' + id;
+	clickCardHandler = () => {
+		let detailsPageUrl = '/restaurant/' + this.props.restaurantId;
 		return this.props.history.push(detailsPageUrl)
 	}
 
@@ -19,7 +19,7 @@ class Restaurant extends Component {
 		const index = this.props.index;
 		const classes = this.props.classes;
 		return (
-			<div className="cardContainer" onClick={this.clickCardHandler.bind(this.props.restaurantId)} key={index}>
+			<div className="cardContainer" onClick={this.clickCardHandler} key={index}>
 				<Card style={{ width: "95%", height: "100%" }} className={classes.restaurantCard} key={index}>
 					<CardMedia
 						component="img"

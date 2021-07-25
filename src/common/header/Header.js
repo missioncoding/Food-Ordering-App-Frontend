@@ -239,12 +239,11 @@ class Header extends Component {
     // first reset the outputs to default
     this.resetSignUpOutputs();
     this.state.firstname === "" ? this.setState({ firstnameRequired: "dispBlock" }) : this.setState({ firstnameRequired: "dispNone" });
-    this.state.lastname === "" ? this.setState({ lastnameRequired: "dispBlock" }) : this.setState({ lastnameRequired: "dispNone" });
     this.state.email === "" ? this.setState({ emailRequired: "dispBlock" }) : this.setState({ emailRequired: "dispNone" });
     this.state.signUpPassword === "" ? this.setState({ signUpPasswordRequired: "dispBlock" }) : this.setState({ signUpPasswordRequired: "dispNone" });
     this.state.mobile === "" ? this.setState({ mobileRequired: "dispBlock" }) : this.setState({ mobileRequired: "dispNone" });
     
-    if (this.state.firstname === "" || this.state.lastname === "" || this.state.email === "" || this.state.signUpPassword === "" || this.state.mobile === "") {
+    if (this.state.firstname === "" || this.state.email === "" || this.state.signUpPassword === "" || this.state.mobile === "") {
       return false 
     } else {
       let isSignupEmailValid = this.validateEmail();
@@ -476,7 +475,6 @@ class Header extends Component {
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="lastname">Last Name</InputLabel>
                 <Input id="lastname" type="text" onChange={this.changeLastNameHandler} value={this.state.lastname} />
-                <FormHelperText className={this.state.lastnameRequired}><span className="red">{this.state.invalidSignUpLastname}</span></FormHelperText>
               </FormControl><br /><br />
 
               <FormControl required className={classes.formControl}>
