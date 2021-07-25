@@ -31,6 +31,10 @@ const styles = (theme => ({
         'width': '145px',
         'color': 'grey'
     },
+    restaurantLocation: { //Style for the Restaurant locations.
+        'padding': '8px 0px 8px 0px',
+        'text-transform' : 'uppercase'
+    },
     restaurantName: { //Style for the Restaurant name.
         'padding': '8px 0px 8px 0px',
         'font-size': '30px',
@@ -43,6 +47,20 @@ const styles = (theme => ({
     },
     itemPrice: { //Style for the Item prices.
         'padding-left': '5px'
+    },
+    totalAmount:{
+        'font-weight': 'bold'
+    },
+    menuItemName:{
+        'padding-left': '15px',
+        'color' : 'grey',
+        'text-transform' : 'capitalize'
+    },
+    cartItemButton: { 
+        'padding': '10px',
+        '&:hover': {
+            'background-color': '#ffee58',
+        }
     }
 }
 ));
@@ -133,7 +151,10 @@ class Details extends Component {
             ...this.state,
             cartItems: cartItems,
             snackBarOpen: true,
-            snackBarMessage: "Item added to cart!",
+           // snackBarMessage: "Item added to cart!",
+            snackBarMessage: itemPresentInCart
+                ? "Item quantity increased by 1!"
+                :"Item added to cart!",
             totalAmount: totalAmount,
             totalItems : prevItems + 1
         });
@@ -216,6 +237,7 @@ class Details extends Component {
       badgeVisible: !this.state.badgeVisible,
     });
   };
+  
 //*****************************************************************************************************************************/
 // Snackbar method handler
 //*****************************************************************************************************************************/
