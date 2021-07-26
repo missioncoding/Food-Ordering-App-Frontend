@@ -91,7 +91,6 @@ class Details extends Component {
     }
 
     componentDidMount() {
-        console.log("Inside Details");
         let data = null;
         let that = this;
         let xhrRestaurantDetails = new XMLHttpRequest()
