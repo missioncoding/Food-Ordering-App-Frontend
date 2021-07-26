@@ -13,6 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from "@material-ui/core/InputAdornment";
 import MenuItem from '@material-ui/core/MenuItem';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -407,14 +408,16 @@ class Header extends Component {
           <div className="header-logo-container"><Fastfood className={classes.headerLogo} /></div>
           {this.props.showSearch &&
             <div className="header-search-container">
-              <div className="search-icon">
-                <SearchIcon style={{ color: "#FFFFFF" }} />
-              </div>
-              <Input
-                onChange={this.props.searchRestaurants.bind(this)}
-                className={classes.searchField}
-                placeholder="Search by Restaurant Name"
-              />
+              <Input id="search-box-input"
+                  startAdornment={
+                      <InputAdornment position="start">
+                          <SearchIcon />
+                      </InputAdornment>
+                  }
+                  placeholder="Search by Restaurant Name"
+                       className={classes.searchField}
+                       onChange={this.props.searchRestaurants.bind(this)}
+                 />
             </div>
           }
           {!this.state.loggedIn ?
